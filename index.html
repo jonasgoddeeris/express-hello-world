@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Puppeteer - Automatic testing</title>
+    <meta name="viewport" content="initial-scale=1.0">
+     <meta http-equiv="refresh" content="45">
+    <meta charset="utf-8">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+ 	<link rel="stylesheet" href="style.css">
+
+
+</head>
+<body>
+
+<div class="container mb-5">
+<h1>MyNew</h1>
+<p>Automatic testing of MyNew Skoda funnel</p>
+
+<br>
+
+<button type="button" id="submit" class="btn btn-primary mb-2" onclick="testAll(testDevices)">Test All Devices</button>
+
+</div>
+
+
+<div class="container">
+<h2>Android</h2>
+
+	<p>galaxyS5</p>
+
+		<br>
+	<p>Samsung Galaxy S9</p>
+		<div class="container">
+		  <div class="row">
+		    <div class="col-sm">
+		      <p>Step 1</p>
+		      <a href="1-fullPage-Samsung Galaxy S9.png" target="_blank"><img src="1-viewport-Samsung Galaxy S9.png" width="70%"></a>
+		    </div>
+		    <div class="col-sm">
+		      <p>Step 2</p>
+		      <a href="2-fullPage-Samsung Galaxy S9.png" target="_blank"><img src="2-viewport-Samsung Galaxy S9.png" width="70%"></a>
+		    </div>
+		    <div class="col-sm">
+		      <p>Step 3</p>
+		      <a href="3-fullPage-Samsung Galaxy S9.png" target="_blank"><img src="3-viewport-Samsung Galaxy S9.png" width="70%"></a>
+		    </div>
+		    <div class="col-sm">
+		      <p>Step 4</p>
+		      <a href="4-fullPage-Samsung Galaxy S9.png" target="_blank"><img src="4-viewport-Samsung Galaxy S9.png" width="70%"></a>
+		    </div>
+		  </div>
+		</div>
+		<br>
+	<p>pixel2</p>
+	<br>
+	<p>Nexus6P</p>
+	<br>
+<h2>iPhone</h2>
+<br>
+	<p>iPhone X</p>
+		<div class="container">
+		  <div class="row">
+		    <div class="col-sm">
+		      <p>Step 1</p>
+		      <a href="1-fullPage-iPhone X.png" target="_blank"><img src="1-viewport-iPhone X.png" width="70%"></a>
+		    </div>
+		    <div class="col-sm">
+		      <p>Step 2</p>
+		      <a href="2-fullPage-iPhone X.png" target="_blank"><img src="2-viewport-iPhone X.png" width="70%"></a>
+		    </div>
+		    <div class="col-sm">
+		      <p>Step 3</p>
+		      <a href="3-fullPage-iPhone X.png" target="_blank"><img src="3-viewport-iPhone X.png" width="70%"></a>
+		    </div>
+		    <div class="col-sm">
+		      <p>Step 4</p>
+		      <a href="4-fullPage-iPhone X.png" target="_blank"><img src="4-viewport-iPhone X.png" width="70%"></a>
+		    </div>
+		  </div>
+		</div>
+		<br>
+	<p>iPhone5</p>
+	<br>
+
+<h2>Desktop</h2>
+	<p>Desktop 1440_880</p>
+		<div class="container">
+		  <div class="row">
+		    <div class="col-sm">
+		      <p>Step 1</p>
+		      <img src="1-viewport-desktop1440_880.png" width="70%">
+		    </div>
+		    <div class="col-sm">
+		      <p>Step 2</p>
+		      <img src="2-viewport-desktop1440_880.png" width="70%">
+		    </div>
+		    <div class="col-sm">
+		      <p>Step 3</p>
+		      <img src="3-viewport-desktop1440_880.png" width="70%">
+		    </div>
+		    <div class="col-sm">
+		      <p>Step 4</p>
+		      <img src="4-viewport-desktop1440_880.png" width="70%">
+		    </div>
+		  </div>
+		</div>
+		<br>
+
+<h2>iPad</h2>
+<br>
+	<p>iPad</p>
+	<br>
+	<p>iPadPro</p>
+	<br>
+
+</div>
+<button type="button" id="download" class="btn btn-primary mb-2">Download all images</button>
+
+<script src="./index.js"></script>
+<script type="text/javascript">/* Callback for button's "click" event */
+function doit() {
+    var imgs = document.querySelectorAll("img");
+    downloadAll(imgs, "", 1);
+};
+
+/* Create and add a "download" button on the top, left corner */
+  document.getElementById("download").addEventListener("click", doit);
+
+
+function downloadAll(imgs, ext, limit) {
+
+    /* Determine the number of images to download */
+    limit = (limit && (0 <= limit) && (limit <= imgs.length))
+            ? limit : imgs.length;
+
+    /* (Try to) download the images */
+    for (var i = 0; i < limit; i++) {
+        var img = imgs[i];
+        console.log("IMG: " + img.src + " (", img, ")");
+        download(img);
+    }
+};
+function download(img) {
+    var link = document.createElement("a");
+    link.href = img.src;
+    link.download = true;
+    link.style.display = "none";
+    var evt = new MouseEvent("click", {
+        "view": window,
+        "bubbles": true,
+        "cancelable": true
+    });
+
+    document.body.appendChild(link);
+    link.dispatchEvent(evt);
+    document.body.removeChild(link);
+    console.log("Downloading...");
+}
+</script>
+</body>
+</html>
