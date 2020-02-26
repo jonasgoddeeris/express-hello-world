@@ -39,8 +39,8 @@ const desktop1440_880 = ownDevice.desktop1440_880;
 
 
 // ---- ADD TESTdevices you want to test to this Array -----
-const testDevices = [galaxyS5, galaxyS9, pixel2, Nexus6P, desktop1440_880, iPhoneX, iPhone5, iPad, iPadPro];
-// const testDevices = [desktop1440_880, iPhoneX, galaxyS9];
+// const testDevices = [galaxyS5, galaxyS9, pixel2, Nexus6P, desktop1440_880, iPhoneX, iPhone5, iPad, iPadPro];
+const testDevices = [desktop1440_880, iPhoneX, galaxyS9];
 //
 
 
@@ -261,3 +261,4 @@ app.listen(3000);
 console.log('Running at Port 3000');
 }
 
+//heroku logs --app test-automation-dieteren
