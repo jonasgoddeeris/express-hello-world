@@ -5,8 +5,8 @@ const fs = require('fs');
 const fse = require('fs-extra');
 const devices = require('puppeteer/DeviceDescriptors');
 // const WebSocket = require('isomorphic-ws');
-const ownDevice = require('1devices.js');
-const date = require('2dateTime.js');
+const ownDevice = require('1devices');
+const date = require('2datetime');
 
 const dateTime = date.dateTime;
 
@@ -258,5 +258,4 @@ app.get('/', function (req, res) {
 app.listen(3000);
 console.log('Running at Port 3000');
 }
-
 
