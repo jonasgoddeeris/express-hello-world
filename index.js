@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+const port = process.env.port || 3000;
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 const fse = require('fs-extra');
@@ -257,8 +258,8 @@ app.get('/', function (req, res) {
   // res.send('Hello World jo')
 })
  
-app.listen(3000);
-console.log('Running at Port 3000');
+app.listen(port);
+console.log('Running at Port ' + port);
 }
 
 //heroku logs --app test-automation-dieteren
