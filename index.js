@@ -258,7 +258,7 @@ app.get('/', function (req, res) {
   // res.send('Hello World jo')
 })
  
-app.listen(port);
+app.listen(port, '0.0.0.0');
 console.log('Running at Port ' + port);
 }
 
