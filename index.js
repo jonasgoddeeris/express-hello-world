@@ -107,7 +107,7 @@ function testAll (data) {
       await page.emulate(deviceToTest);   //emulate device new
 
 
-      //--- START google optimize preview load (comment to just test a normal website with no ab test)
+      //--- START google optimize preview load (comment to just test a normal website with no a/b test)
       //uncomment below
       // await page.goto(previewURLGoogleOptimize);
       // await page.click('body > div > div > div > main > md-whiteframe > div > div > div.opt-preview-content.opt-preview-link-container.ng-scope > a');
