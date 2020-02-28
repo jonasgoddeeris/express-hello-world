@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const port = process.env.port || 3000;
+const port = process.env.PORT || 3000;
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 const fse = require('fs-extra');
@@ -40,8 +40,8 @@ const desktop1440_880 = ownDevice.desktop1440_880;
 
 
 // ---- ADD TESTdevices you want to test to this Array -----
-// const testDevices = [galaxyS5, galaxyS9, pixel2, Nexus6P, desktop1440_880, iPhoneX, iPhone5, iPad, iPadPro];
-const testDevices = [desktop1440_880, iPhoneX, galaxyS9];
+const testDevices = [galaxyS5, galaxyS9, pixel2, Nexus6P, desktop1440_880, iPhoneX, iPhone5, iPad, iPadPro];
+// const testDevices = [iPhoneX, galaxyS5,iPad,desktop1440_880];
 //
 
 
@@ -201,7 +201,7 @@ await page.click('#myidRequest');
 await page.content();
 console.log('step 3 ' + device);
 await page.waitFor(5000);
-await page.waitForSelector('#m')
+await page.waitForSelector('#m');
 await page.click('#m');
 await page.type('#firstname-form', "test-firstname");
 await page.type('#lastname-form', "test-lastname");
@@ -251,6 +251,8 @@ await browser.close();
 console.log("Done " + device);
 })();
 }
+
+//START EXPRESS APP
 app.use(express.static(__dirname+'/tmp/Skoda/' + dateTime +'/'));
 
 app.get('/', function (req, res) {
@@ -261,5 +263,6 @@ app.get('/', function (req, res) {
 app.listen(port, '0.0.0.0');
 console.log('Running at Port ' + port);
 }
+//STOP EXPRESS APP
 
 //heroku logs --app test-automation-dieteren
