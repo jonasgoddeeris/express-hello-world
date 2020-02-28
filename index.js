@@ -1,3 +1,18 @@
+
+// 
+//
+//------------------------------ READ THIS ---------------------------------
+//
+//
+// before starting
+// you need to add google optimize preview URL, URL and define in the array which devices are the testDEVICES !!!!
+//
+//
+//------------------------------ END READ THIS ----------------------------------
+//
+//
+
+
 const express = require('express')
 const app = express()
 const port = process.env.PORT || 3000;
@@ -5,13 +20,11 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 const fse = require('fs-extra');
 const devices = require('puppeteer/DeviceDescriptors');
-// const WebSocket = require('isomorphic-ws');
 const ownDevice = require('1devices');
 const date = require('2datetime');
-
 const dateTime = date.dateTime;
 
-// --- --------- DEVICES OBJECTS 
+// ------------ DEVICES OBJECTS - viewports- 
 const Nexus6P = devices[ 'Nexus 6P' ];
 const Nexus6 = devices[ 'Nexus 6' ];
 const Nexus5 = devices[ 'Nexus 5' ];
@@ -20,22 +33,19 @@ const pixel2XL = devices[ 'Pixel 2 XL' ];
 const galaxyS5 = devices[ 'Galaxy S5' ];
 const galaxyS9 = ownDevice.galaxyS9;
 const galaxyS7 = ownDevice.galaxyS7;
-
 const iPhoneX = devices[ 'iPhone X' ];
 const iPhoneXr = devices[ 'iPhone XR' ];
 const iPhone8 = devices[ 'iPhone 8' ];
 const iPhone6 = devices[ 'iPhone 6' ];
 const iPhone5 = devices[ 'iPhone 5' ];
 const iPhoneXsMaxFirefox = ownDevice.iPhoneXsMaxFirefox;
-
-
 const iPadPro = devices[ 'iPad Pro' ];
 const iPad = devices[ 'iPad' ];
 const iPadMini = devices[ 'iPad Mini' ];
 const iPadlandscape = devices[ 'iPad landscape' ];
-
 const desktop1440_880 = ownDevice.desktop1440_880;
 // --- ------ END DEVICES OBJECTS
+
 
 
 
@@ -51,6 +61,7 @@ testAll(testDevices);  // function for loop - commented to see effect on build !
 
 
 //--------- start brand objects
+//START URL FOR PUPPETEER
 
 const skodaObject = {
   name: 'Skoda MyNew',
@@ -75,52 +86,6 @@ const brand = result[1];
 const previewURL = "https://www.google-analytics.com/gtm/set_cookie?uiv2&id=GTM-TS4PDF6&gtm_auth=G4S7idMaTbioFtOmTgrRug&gtm_debug&gtm_experiment=GTM-TS4PDF6_OPT-WRW33%241&gtm_preview=opt_preview-slim&redirect=https%3A%2F%2Foptimize.google.com%2Foptimize%2Fsharepreview%3Fid%3DGTM-TS4PDF6%26gtm_experiment%3DGTM-TS4PDF6_OPT-WRW33%25241%26url%3Dhttps%253A%252F%252Fcloud.mail.dieteren.be%252Fmynew%252Fform%253Fbrand%253DSKODA%2526lang%253Dfr%2526model1%253DOC2%2526testdrive%253Dtrue%26opt_experiment_name%3DA%252FB%2520%25234%2520-%2520No%2520engagement%2520V2%26opt_variation_name%3DVariant%25201%26slim%3Dtrue%26container_name%3Dskoda.be&optimize_editor";
 
 // --- END  AB TEST PREVIEW URL AND/OR flow start URL  ---
-
-
-
-
-
-
-// 
-//
-//------------------------------ READ THIS ---------------------------------
-//
-//
-// before starting
-// you need to add google optimize preview URL, URL and define in the array which devices are the testDEVICES !!!!
-//
-//
-//------------------------------ END READ THIS ----------------------------------
-//
-//
-
-
-
-//--------- custom WebSocket
-
-// const ws = new WebSocket('wss://echo.websocket.org/', {
-//   origin: 'https://websocket.org'
-// });
-
-// ws.onopen = function open() {
-//   console.log('connected');
-//   ws.send(Date.now());
-// };
-
-// ws.onclose = function close() {
-//   console.log('disconnected');
-// };
-
-// ws.onmessage = function incoming(data) {
-//   console.log(`Roundtrip time: ${Date.now() - data.data} ms`);
-
-//   setTimeout(function timeout() {
-//     ws.send(Date.now());
-//   }, 500);
-// };
-
-//------ end custom WebSocket
-
 
 
 
