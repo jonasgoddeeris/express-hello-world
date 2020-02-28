@@ -49,7 +49,7 @@ const desktop1440_880 = ownDevice.desktop1440_880;
 
 // ---- ADD TESTdevices you want to test to this Array -----
 // const testDevices = [galaxyS5, galaxyS9, pixel2, Nexus6P, desktop1440_880, iPhoneX, iPhone8, iPhone5, iPad, iPadPro];
-const testDevices = [desktop1440_880];
+const testDevices = [desktop1440_880, galaxyS5];
 
 
 testAll(testDevices);  // function for loop - commented to see effect on build !!
