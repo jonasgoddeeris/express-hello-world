@@ -97,7 +97,7 @@ function testAll (data) {
 
     (async () => {
       const browser = await puppeteer.launch({
-        headless: false,       // default headless is true 
+        headless: true,       // default headless is true 
         args: ['--no-sandbox'] // no sandbox is for heroku
       }); 
       
