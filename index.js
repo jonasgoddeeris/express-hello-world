@@ -1,17 +1,16 @@
-
-// 
 //
 //------------------------------ READ THIS ---------------------------------
 //
 //
-// before starting
-// you need to add google optimize preview URL, URL and define in the array which devices are the testDEVICES !!!!
+// before starting, you need to add;
+//
+//- google optimize preview URL
+//- URL
+//- define in the TESTDEVICESarray which devices are to be tested!
 //
 //
 //------------------------------ END READ THIS ----------------------------------
 //
-//
-
 
 const express = require('express')
 const app = express()
@@ -24,7 +23,8 @@ const ownDevice = require('1devices');
 const date = require('2datetime');
 const dateTime = date.dateTime;
 
-// ------------ DEVICES OBJECTS - viewports- 
+
+// ------------- DEVICES OBJECTS  
 const Nexus6P = devices[ 'Nexus 6P' ];
 const Nexus6 = devices[ 'Nexus 6' ];
 const Nexus5 = devices[ 'Nexus 5' ];
@@ -44,14 +44,14 @@ const iPad = devices[ 'iPad' ];
 const iPadMini = devices[ 'iPad Mini' ];
 const iPadlandscape = devices[ 'iPad landscape' ];
 const desktop1440_880 = ownDevice.desktop1440_880;
-// --- ------ END DEVICES OBJECTS
+// --------- END DEVICES OBJECTS
 
 
 
 
 // ---- ADD TESTdevices you want to test to this Array -----
-// const testDevices = [galaxyS5, galaxyS9, pixel2, Nexus6P, desktop1440_880, iPhoneX, iPhone5, iPad, iPadPro];
-const testDevices = [galaxyS5];
+// const testDevices = [galaxyS5, galaxyS9, pixel2, Nexus6P, desktop1440_880, iPhoneX, iPhone8, iPhone5, iPad, iPadPro];
+const testDevices = [galaxyS5, desktop1440_880, iPhoneX];
 //
 
 
@@ -102,7 +102,7 @@ function testAll (data) {
 
 (async () => {
   const browser = await puppeteer.launch({
-  headless: true, // default headless is true 
+  headless: false, // default headless is true 
   args: ['--no-sandbox']}); // no sandbox is for heroku
   console.log('start ' + device);
   // console.log(browser.wsEndpoint());
