@@ -16,7 +16,8 @@
 
 <div class="container mb-5">
 <h1>MyNew</h1>
-<p>Automatic testing of MyNew Skoda funnel</p>
+<p>Automatic testing of funnel</p>
+<p id="brand-tool"></p>
 
 <br>
 
@@ -255,6 +256,13 @@
 <button type="button" id="download" class="btn btn-primary mb-2">Download all images</button>
 
 <script src="./index.js"></script>
+
+<script type="text/javascript">
+ document.getElementById('brand-tool').innerHTML = brand + ' ' + brandObject.tool;
+ console.log(brand + ' ' + brandObject.tool);
+</script>
+
+
 <script type="text/javascript">/* Callback for button's "click" event */
 function doit() {
     var imgs = document.querySelectorAll("img");
