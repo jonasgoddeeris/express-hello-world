@@ -3,8 +3,8 @@
 //
 // before starting, you need to add;
 //
-//1) google optimize preview URL
-//2)  URL
+//1) google optimize preview URL (optional)
+//2) URL by choosing a brand on line 86 (this is always needed no matter if AB test preview is given)
 //3) define in the TESTDEVICESarray which devices are to be tested!
 //
 //
@@ -36,7 +36,6 @@ const iPhoneXr = devices[ 'iPhone XR' ];
 const iPhone8 = devices[ 'iPhone 8' ];
 const iPhone6 = devices[ 'iPhone 6' ];
 const iPhone5 = devices[ 'iPhone 5' ];
-const iPhoneXsMaxFirefox = ownDevice.iPhoneXsMaxFirefox;
 const iPadPro = devices[ 'iPad Pro' ];
 const iPad = devices[ 'iPad' ];
 const iPadMini = devices[ 'iPad Mini' ];
@@ -59,8 +58,10 @@ const brands = [{
   tool:'mynew',
   url: 'https://cloud.mail.dieteren.be/mynew/cars?lang=nl&brand=Audi',
   selectorCarStep1: '#A1S > div.car-wrap',
-  selectorCarStep1_1: '#A1S'
-
+  selectorCarStep1_1: '#A1S > img',
+  selectorOpenGenderStep3: '#select2-gender-form-container',
+  selectorGenderStep3: '', // Not possible for Audi - has a dynamic ID (see puppeteer AUDI hardcoded start's with ID match)
+  selectorCommentStep3: '#carsForm > div.request-container.form-wrap > div.row > div:nth-child(10) > div > div > div > textarea'
 },
 {
   brand: 'Seat',
@@ -81,7 +82,7 @@ const skoda = brands[0];
 const seat = brands[2];
 
 
-const brandObject = audi; // --------------------------- Change this to choose wich brand !
+const brandObject = audi; // -----'audi' or 'seat' or 'skoda'-----URL auto selected----- Change this to choose wich brand !
 const url = brandObject.url; //START URL FOR PUPPETEER 
 const brand = brandObject.brand;
 console.log(brand + ' ' + brandObject.tool);
@@ -100,7 +101,7 @@ testAll(brand, testDevices);  // function for loop - commented to see effect on 
 
 // ---FILL IN AB TEST PREVIEW URL AND/OR flow start URL
 
-const previewURLGoogleOptimize = "https://www.google-analytics.com/gtm/set_cookie?uiv2&id=GTM-TS4PDF6&gtm_auth=G4S7idMaTbioFtOmTgrRug&gtm_debug&gtm_experiment=GTM-TS4PDF6_OPT-WRW33%241&gtm_preview=opt_preview-slim&redirect=https%3A%2F%2Foptimize.google.com%2Foptimize%2Fsharepreview%3Fid%3DGTM-TS4PDF6%26gtm_experiment%3DGTM-TS4PDF6_OPT-WRW33%25241%26url%3Dhttps%253A%252F%252Fcloud.mail.dieteren.be%252Fmynew%252Fform%253Fbrand%253DSKODA%2526lang%253Dfr%2526model1%253DOC2%2526testdrive%253Dtrue%26opt_experiment_name%3DA%252FB%2520%25234%2520-%2520No%2520engagement%2520V2%26opt_variation_name%3DVariant%25201%26slim%3Dtrue%26container_name%3Dskoda.be&optimize_editor";
+// const previewURLGoogleOptimize = "https://www.google-analytics.com/gtm/set_cookie?uiv2&id=GTM-TS4PDF6&gtm_auth=G4S7idMaTbioFtOmTgrRug&gtm_debug&gtm_experiment=GTM-TS4PDF6_OPT-WRW33%241&gtm_preview=opt_preview-slim&redirect=https%3A%2F%2Foptimize.google.com%2Foptimize%2Fsharepreview%3Fid%3DGTM-TS4PDF6%26gtm_experiment%3DGTM-TS4PDF6_OPT-WRW33%25241%26url%3Dhttps%253A%252F%252Fcloud.mail.dieteren.be%252Fmynew%252Fform%253Fbrand%253DSKODA%2526lang%253Dfr%2526model1%253DOC2%2526testdrive%253Dtrue%26opt_experiment_name%3DA%252FB%2520%25234%2520-%2520No%2520engagement%2520V2%26opt_variation_name%3DVariant%25201%26slim%3Dtrue%26container_name%3Dskoda.be&optimize_editor";
 
 // --- END  AB TEST PREVIEW URL AND/OR flow start URL 
 
@@ -108,7 +109,8 @@ const previewURLGoogleOptimize = "https://www.google-analytics.com/gtm/set_cooki
 
 
 
-// ONLY CODE BELOW 
+// ONLY CODE BELOW  -----------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------
 // DO NOT MAKE ANY CHANGE BELOW THIS LINE
 
 
@@ -138,7 +140,6 @@ function testAll (brand, data) {
       const page = await browser.newPage();
       await page.emulate(deviceToTest);   //emulate device new
 
-
       //--- START google optimize preview load (comment to just test a normal website with no a/b test)
       //uncomment below
       // await page.goto(previewURLGoogleOptimize);
@@ -149,8 +150,7 @@ function testAll (brand, data) {
       // --- END google optimize preview link
 
 
-      await page.goto(url);  //normal URL from 'brand' object (this is always needed no matter if AB test preview is given)
-
+      await page.goto(url);  //normal URL from 'brand' object 
 
       const dir = './tmp/' + brand + '/' + dateTime + '/' ;  // ---- create folders for screenshots per device per run.
       fse.ensureDir(dir)
@@ -164,29 +164,30 @@ function testAll (brand, data) {
       // funnel specific code here
       await page.content();
       await page.click('#cookie-bar > p:nth-child(1) > a.cb-enable');
-      await page.waitFor(6000);
+      await page.waitFor(7000);
       await page.screenshot({path: dir + '1-viewport-' + device + '.png', fullPage: false});
       await page.screenshot({path: dir + '1-fullPage-' + device + '.png', fullPage: true});
       console.log('step 1 ' + device);
+      await page.waitForSelector(brandObject.selectorCarStep1);
       await page.click(brandObject.selectorCarStep1); // works for seat and skoda, but audi needs a second selection of specific model.
-      await page.waitFor(6000);
+      await page.waitFor(5000);
       await page.waitForSelector('#TD');
       await page.click('#TD');
       await page.screenshot({path: dir + '2-viewport-' + device + '.png', fullPage: false});
       await page.screenshot({path: dir + '2-fullPage-' + device + '.png', fullPage: true});
       console.log('step 2 ' + device);
-      await page.waitFor(5000);
       await page.waitForSelector('#myidRequest');
       await page.click('#myidRequest');
       await page.content();
       console.log('step 3 ' + device);
-      await page.waitFor(5000);
-      await page.waitForSelector(brandObject.selectorGenderStep3);
+      await page.waitFor(6000);
+      // await page.waitForSelector(brandObject.selectorGenderStep3); // THOIS GIVES A TIMEOUT ERROR 
       await page.click(brandObject.selectorGenderStep3);
       await page.type('#firstname-form', "test-firstname");
       await page.type('#lastname-form', "test-lastname");
       await page.type('#phone-form', "0000000000");
       await page.type('#email-form', "test345678@test3456789.be");
+      await page.waitForSelector('#select2-DEALER_SIM-container');
       await page.click('#select2-DEALER_SIM-container');
       console.log('step 3.3 ' + device);
       await page.keyboard.press('ArrowDown');
@@ -215,7 +216,7 @@ function testAll (brand, data) {
       // --- END COMMENT IMPORTANT 
 
       await page.content();
-      await page.waitFor(5000);
+      // await page.waitFor(5000);
       await page.screenshot({path: dir + '4-viewport-' + device + '.png', fullPage: false});
       await page.screenshot({path: dir + '4-fullPage-' + device + '.png', fullPage: true});
       console.log('step 4 ' + device);
@@ -274,18 +275,18 @@ console.log("Skoda is running ...");
       // funnel specific code here
       await page.content();
       await page.click('#cookie-bar > p:nth-child(1) > a.cb-enable');
-      await page.waitFor(6000);
+      await page.waitFor(7000);
       await page.screenshot({path: dir + '1-viewport-' + device + '.png', fullPage: false});
       await page.screenshot({path: dir + '1-fullPage-' + device + '.png', fullPage: true});
       console.log('step 1 ' + device);
+      await page.waitForSelector(brandObject.selectorCarStep1);
       await page.click(brandObject.selectorCarStep1); // works for seat and skoda, but audi needs a second selection of specific model.
-      await page.waitFor(6000);
+      await page.waitFor(5000);
       await page.waitForSelector('#TD');
       await page.click('#TD');
       await page.screenshot({path: dir + '2-viewport-' + device + '.png', fullPage: false});
       await page.screenshot({path: dir + '2-fullPage-' + device + '.png', fullPage: true});
       console.log('step 2 ' + device);
-      await page.waitFor(5000);
       await page.waitForSelector('#myidRequest');
       await page.click('#myidRequest');
       await page.content();
@@ -293,12 +294,13 @@ console.log("Skoda is running ...");
       await page.waitFor(5000);
       await page.waitForSelector(brandObject.selectorOpenGenderStep3);
       await page.click(brandObject.selectorOpenGenderStep3);
-      await page.waitFor(1000);
+      await page.waitForSelector('[id^="select2-gender-form-result-"][id$="-male"]');
       await page.click('[id^="select2-gender-form-result-"][id$="-male"]');
       await page.type('#firstname-form', "test-firstname");
       await page.type('#lastname-form', "test-lastname");
       await page.type('#phone-form', "0000000000");
       await page.type('#email-form', "test345678@test3456789.be");
+      await page.waitForSelector('#select2-DEALER_SIM-container');
       await page.click('#select2-DEALER_SIM-container');
       console.log('step 3.3 ' + device);
       await page.keyboard.press('ArrowDown');
@@ -327,7 +329,7 @@ console.log("Skoda is running ...");
       // --- END COMMENT IMPORTANT 
 
       await page.content();
-      await page.waitFor(5000);
+      // await page.waitFor(5000);
       await page.screenshot({path: dir + '4-viewport-' + device + '.png', fullPage: false});
       await page.screenshot({path: dir + '4-fullPage-' + device + '.png', fullPage: true});
       console.log('step 4 ' + device);
@@ -389,21 +391,22 @@ console.log("Skoda is running ...");
 
       // funnel specific code here
       await page.content();
+      await page.waitForSelector('#cookie-bar > p:nth-child(1) > a.cb-enable');
       await page.click('#cookie-bar > p:nth-child(1) > a.cb-enable');
-      await page.waitFor(6000);
+      await page.waitFor(7000);
       await page.screenshot({path: dir + '1-viewport-' + device + '.png', fullPage: false});
       await page.screenshot({path: dir + '1-fullPage-' + device + '.png', fullPage: true});
       console.log('step 1 ' + device);
       await page.click(brandObject.selectorCarStep1); // works for seat and skoda, but audi needs 2nd selection
       await page.waitFor(1000);
+      await page.waitForSelector(brandObject.selectorCarStep1_1);
       await page.click(brandObject.selectorCarStep1_1); 
-      await page.waitFor(6000);
+      await page.waitFor(5000);
       await page.waitForSelector('#TD');
       await page.click('#TD'); // button to step 2
       await page.screenshot({path: dir + '2-viewport-' + device + '.png', fullPage: false});
       await page.screenshot({path: dir + '2-fullPage-' + device + '.png', fullPage: true});
       console.log('step 2 ' + device);
-      await page.waitFor(5000);
       await page.waitForSelector('#myidRequest');
       await page.click('#myidRequest');
       await page.content();
@@ -411,12 +414,13 @@ console.log("Skoda is running ...");
       await page.waitFor(5000);
       await page.waitForSelector(brandObject.selectorOpenGenderStep3);
       await page.click(brandObject.selectorOpenGenderStep3);
-      await page.waitFor(1000);
+      await page.waitForSelector('[id^="select2-gender-form-result-"][id$="-male"]');
       await page.click('[id^="select2-gender-form-result-"][id$="-male"]');
       await page.type('#firstname-form', "test-firstname");
       await page.type('#lastname-form', "test-lastname");
       await page.type('#phone-form', "0000000000");
       await page.type('#email-form', "test345678@test3456789.be");
+      await page.waitForSelector('#select2-DEALER_SIM-container');
       await page.click('#select2-DEALER_SIM-container');
       console.log('step 3.3 ' + device);
       await page.keyboard.press('ArrowDown');
@@ -445,7 +449,7 @@ console.log("Skoda is running ...");
       // --- END COMMENT IMPORTANT 
 
       await page.content();
-      await page.waitFor(5000);
+      // await page.waitFor(5000);
       await page.screenshot({path: dir + '4-viewport-' + device + '.png', fullPage: false});
       await page.screenshot({path: dir + '4-fullPage-' + device + '.png', fullPage: true});
       console.log('step 4 ' + device);
@@ -475,7 +479,7 @@ console.log("Skoda is running ...");
   console.log('Running at Port ' + port);
   //STOP EXPRESS APP
 
-
+ console.log("All is done");
 
 } // end of function TestAll
 
